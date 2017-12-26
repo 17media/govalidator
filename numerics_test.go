@@ -204,6 +204,58 @@ func TestInRangeInt(t *testing.T) {
 	}
 }
 
+func TestInRangeInt32(t *testing.T) {
+	t.Parallel()
+
+	var tests = []struct {
+		param    int32
+		left     int32
+		right    int32
+		expected bool
+	}{
+		{0, 0, 0, true},
+		{1, 0, 0, false},
+		{-1, 0, 0, false},
+		{0, -1, 1, true},
+		{0, 0, 1, true},
+		{0, -1, 0, true},
+		{0, 0, -1, true},
+		{0, 10, 5, false},
+	}
+	for _, test := range tests {
+		actual := InRangeInt32(test.param, test.left, test.right)
+		if actual != test.expected {
+			t.Errorf("Expected InRangeInt32(%v, %v, %v) to be %v, got %v", test.param, test.left, test.right, test.expected, actual)
+		}
+	}
+}
+
+func TestInRangeInt64(t *testing.T) {
+	t.Parallel()
+
+	var tests = []struct {
+		param    int64
+		left     int64
+		right    int64
+		expected bool
+	}{
+		{0, 0, 0, true},
+		{1, 0, 0, false},
+		{-1, 0, 0, false},
+		{0, -1, 1, true},
+		{0, 0, 1, true},
+		{0, -1, 0, true},
+		{0, 0, -1, true},
+		{0, 10, 5, false},
+	}
+	for _, test := range tests {
+		actual := InRangeInt64(test.param, test.left, test.right)
+		if actual != test.expected {
+			t.Errorf("Expected InRangeInt64(%v, %v, %v) to be %v, got %v", test.param, test.left, test.right, test.expected, actual)
+		}
+	}
+}
+
 func TestInRangeFloat32(t *testing.T) {
 	t.Parallel()
 
@@ -275,6 +327,50 @@ func TestInRange(t *testing.T) {
 		{0, 10, 5, false},
 	}
 	for _, test := range testsInt {
+		actual := InRange(test.param, test.left, test.right)
+		if actual != test.expected {
+			t.Errorf("Expected InRange(%v, %v, %v) to be %v, got %v", test.param, test.left, test.right, test.expected, actual)
+		}
+	}
+
+	var testsInt32 = []struct {
+		param    int32
+		left     int32
+		right    int32
+		expected bool
+	}{
+		{0, 0, 0, true},
+		{1, 0, 0, false},
+		{-1, 0, 0, false},
+		{0, -1, 1, true},
+		{0, 0, 1, true},
+		{0, -1, 0, true},
+		{0, 0, -1, true},
+		{0, 10, 5, false},
+	}
+	for _, test := range testsInt32 {
+		actual := InRange(test.param, test.left, test.right)
+		if actual != test.expected {
+			t.Errorf("Expected InRange(%v, %v, %v) to be %v, got %v", test.param, test.left, test.right, test.expected, actual)
+		}
+	}
+
+	var testsInt64 = []struct {
+		param    int64
+		left     int64
+		right    int64
+		expected bool
+	}{
+		{0, 0, 0, true},
+		{1, 0, 0, false},
+		{-1, 0, 0, false},
+		{0, -1, 1, true},
+		{0, 0, 1, true},
+		{0, -1, 0, true},
+		{0, 0, -1, true},
+		{0, 10, 5, false},
+	}
+	for _, test := range testsInt64 {
 		actual := InRange(test.param, test.left, test.right)
 		if actual != test.expected {
 			t.Errorf("Expected InRange(%v, %v, %v) to be %v, got %v", test.param, test.left, test.right, test.expected, actual)

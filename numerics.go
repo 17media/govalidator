@@ -41,7 +41,7 @@ func IsNonPositive(value float64) bool {
 	return value <= 0
 }
 
-// InRange returns true if value lies between left and right border
+// InRangeInt returns true if value lies between left and right border
 func InRangeInt(value, left, right int) bool {
 	if left > right {
 		left, right = right, left
@@ -49,7 +49,23 @@ func InRangeInt(value, left, right int) bool {
 	return value >= left && value <= right
 }
 
-// InRange returns true if value lies between left and right border
+// InRangeInt32 returns true if value lies between left and right border
+func InRangeInt32(value, left, right int32) bool {
+	if left > right {
+		left, right = right, left
+	}
+	return value >= left && value <= right
+}
+
+// InRangeInt64 returns true if value lies between left and right border
+func InRangeInt64(value, left, right int64) bool {
+	if left > right {
+		left, right = right, left
+	}
+	return value >= left && value <= right
+}
+
+// InRangeFloat32 returns true if value lies between left and right border
 func InRangeFloat32(value, left, right float32) bool {
 	if left > right {
 		left, right = right, left
@@ -57,7 +73,7 @@ func InRangeFloat32(value, left, right float32) bool {
 	return value >= left && value <= right
 }
 
-// InRange returns true if value lies between left and right border
+// InRangeFloat64 returns true if value lies between left and right border
 func InRangeFloat64(value, left, right float64) bool {
 	if left > right {
 		left, right = right, left
@@ -65,20 +81,28 @@ func InRangeFloat64(value, left, right float64) bool {
 	return value >= left && value <= right
 }
 
-// InRange returns true if value lies between left and right border, generic type to handle int, float32 or float64, all types must the same type
+// InRange returns true if value lies between left and right border, generic type to handle int, int32, int64, float32 or float64, all types must the same type
 func InRange(value interface{}, left interface{}, right interface{}) bool {
 
 	reflectValue := reflect.TypeOf(value).Kind()
 	reflectLeft := reflect.TypeOf(left).Kind()
 	reflectRight := reflect.TypeOf(right).Kind()
 
-	if reflectValue == reflect.Int && reflectLeft == reflect.Int && reflectRight == reflect.Int {
+	if reflectValue != reflectLeft || reflectValue != reflectRight {
+		return false
+	}
+	switch reflectValue {
+	case reflect.Int:
 		return InRangeInt(value.(int), left.(int), right.(int))
-	} else if reflectValue == reflect.Float32 && reflectLeft == reflect.Float32 && reflectRight == reflect.Float32 {
+	case reflect.Int32:
+		return InRangeInt32(value.(int32), left.(int32), right.(int32))
+	case reflect.Int64:
+		return InRangeInt64(value.(int64), left.(int64), right.(int64))
+	case reflect.Float32:
 		return InRangeFloat32(value.(float32), left.(float32), right.(float32))
-	} else if reflectValue == reflect.Float64 && reflectLeft == reflect.Float64 && reflectRight == reflect.Float64 {
+	case reflect.Float64:
 		return InRangeFloat64(value.(float64), left.(float64), right.(float64))
-	} else {
+	default:
 		return false
 	}
 }
